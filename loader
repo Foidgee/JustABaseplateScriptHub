@@ -1,0 +1,95 @@
+-- Advertencia al cargar
+pcall(function()
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "just a baseplate script hub",
+        Text = "by foidgee",
+        Duration = 10
+    })
+end)
+
+-- Librerías
+local UserInputService = game:GetService("UserInputService")
+local Library = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+-- Clave por defecto
+local currentToggleKey = Enum.KeyCode.V
+
+-- Crear ventana principal
+local Window = Library:CreateWindow({
+    Title = "just a baseplate hub",
+    SubTitle = "by foidgee",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(600, 450),
+    Theme = "Light",
+    Acrylic = true
+    -- Quitamos MinimizeKey
+})
+
+-- Detectar tecla de toggle personalizada
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == currentToggleKey then
+        Window.Visible = not Window.Visible
+    end
+end)
+
+-- Tabs
+local Tabs = {
+    Main = Window:AddTab({ Title = "Scripts", Icon = "terminal" }),
+    Hubs = Window:AddTab({ Title = "Hubs", Icon = "package" }),
+    Settings = Window:AddTab({ Title = "GUI Settings", Icon = "settings" })
+}
+
+-- Logo en la pestaña Main
+Tabs.Main:AddParagraph({
+    Title = "note",
+    Content = "i didnt make this scripts, all i did was paste them into this gui so you can execute them more easily, reset before loading another script ok bai"
+})
+
+-- Función para crear botones fácilmente
+local function createButton(tab, title, url)
+    tab:AddButton({
+        Title = title,
+        Callback = function()
+            loadstring(game:HttpGet(url))()
+        end
+    })
+end
+
+-- Botones en Main
+createButton(Tabs.Main, "da feed", "https://gist.githubusercontent.com/1BlueCat/7291747e9f093555573e027621f08d6e/raw/23b48f2463942befe19d81aa8a06e3222996242c/FE%2520Da%2520Feets")
+createButton(Tabs.Main, "among us ", "https://rawscripts.net/raw/Nothing-Fe-Among-Us-V2-(R6)-3224")
+createButton(Tabs.Main, "nameless animation", "https://rawscripts.net/raw/Universal-Script-FE-Nameless-Animations-V4-4249")
+createButton(Tabs.Main, "hat hub", "https://raw.githubusercontent.com/inkdupe/hat-scripts/refs/heads/main/updatedhathub.lua")
+createButton(Tabs.Main, "vr", "https://rawscripts.net/raw/Just-a-baseplate.-Fe-Clovr-14102")
+createButton(Tabs.Main, "void boss", "https://pastebin.com/raw/PxiYp6ht")
+createButton(Tabs.Main, "drift motorcycle", "https://pastebin.com/raw/RFCMAnqk")
+createButton(Tabs.Main, "winged master", "https://pastebin.com/raw/G68Krc4Q")
+createButton(Tabs.Main, "gatling", "https://pastebin.com/raw/2vZ1MSae")
+createButton(Tabs.Main, "achromatic", "https://pastebin.com/raw/sanApixs")
+createButton(Tabs.Main, "Coming soon", "")
+
+
+-- Hubs
+createButton(Tabs.Hubs, "GhostHub", "https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub")
+createButton(Tabs.Hubs, "Atlantis Hub", "https://raw.githubusercontent.com/Foidgee/Atlantis/refs/heads/main/ignore")
+createButton(Tabs.Hubs, "Coming soon", "")
+
+-- GUI Settings
+Tabs.Settings:AddDropdown("theme", {
+    Title = "Theme",
+    Description = "Selecciona el tema",
+    Values = {"Light", "Dark"},
+    Default = 1,
+    Callback = function(val)
+        Library:SetTheme(val)
+    end
+})
+
+Tabs.Settings:AddKeybind("toggle", {
+    Title = "Toggle GUI",
+    Mode = "Toggle",
+    Default = currentToggleKey,
+    Callback = function(_, newKey)
+        currentToggleKey = newKey
+    end
+})
